@@ -33,6 +33,12 @@ TagManager:
   - socketx
   - sockety
   - socketz
+  - plugRedA
+  - plugRedB
+  - plugBlueA
+  - plugBlueB
+  - plugYellowA
+  - plugYellowB
   layers:
   - Default
   - TransparentFX

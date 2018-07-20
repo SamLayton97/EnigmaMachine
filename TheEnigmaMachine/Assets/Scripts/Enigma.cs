@@ -40,7 +40,8 @@ public class Enigma : MonoBehaviour
     string currentReflector;                        // reference to the current reflector in enigma
     int[] rotorPositions = new int[3];              // array storing the rotational positions of each rotor
     char[] turnoverPos = new char[3];               // array storing tunrover positions on each rotor determining when next should advance
-                                                    // Note: turnover point entails that next rotor advances when current rotor leaves this position
+                                                    // Note: turnover point entails that next rotor advances when current rotor reaches this position
+    string notchMarks = "rfwka";                    // turnover points of each rotor model -- previous array sets itself to elements of this
 
     // plugboard support
     Dictionary<PlugID, char> plugboardInfo = new Dictionary<PlugID, char>();
@@ -284,7 +285,7 @@ public class Enigma : MonoBehaviour
             // set both rotor model, rotational position, and turnover points to safe defaults
             currentRotors[i] = rotorWirings[RotorModel.I];
             rotorPositions[i] = 1;
-            turnoverPos[i] = 'q';
+            turnoverPos[i] = notchMarks[0];
         }
 
         // set current reflector to save default
@@ -367,13 +368,14 @@ public class Enigma : MonoBehaviour
     }
 
     /// <summary>
-    /// Adjusts internal wiring of a given rotor
+    /// Adjusts internal wiring and turnover positions of a given rotor
     /// </summary>
     /// <param name="rotorNumber">which rotor shifted wiring</param>
     /// <param name="newModel">new wiring model for given rotor</param>
     void DetectRotorRewiring(int rotorNumber, RotorModel newModel)
     {
         currentRotors[rotorNumber] = rotorWirings[newModel];
+        turnoverPos[rotorNumber] = notchMarks[(int)newModel];
     }
 
     /// <summary>

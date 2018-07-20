@@ -33,6 +33,12 @@ public class SubstitutionPlug : MonoBehaviour
     // insertion event support
     PlugInsertedEvent plugInsertedEvent;
 
+    // draw line support
+    LineRenderer lineRenderer;              // line renderer used to draw line between two points
+    Vector2 partnerPos = new Vector2();     // current position of connected plug
+    GameObject partnerPlug;                 // reference to connected plug
+    Color wireColor;                        // color of line to draw between plugs
+
     /// <summary>
     /// Provides read / write access to plug's ID
     /// </summary>
@@ -59,6 +65,7 @@ public class SubstitutionPlug : MonoBehaviour
         // retrieve relevant components
         plugCollider = GetComponent<BoxCollider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        lineRenderer = GetComponent<LineRenderer>();
     }
 
     /// <summary>
@@ -70,26 +77,41 @@ public class SubstitutionPlug : MonoBehaviour
         plugInsertedEvent = new PlugInsertedEvent();
         EventManager.AddPlugInsertedInvoker(this);
 
-        // set plug's sprite according to set ID
+        // set tag to reflect plug's ID
+        gameObject.tag = "plug" + id.ToString();
+
+        // set plug's sprite and wire color according to its ID
         switch (id)
         {
             case PlugID.RedA:
                 spriteRenderer.sprite = redPlugSprite;
+                lineRenderer.startColor = Color.red;
+                lineRenderer.endColor = Color.red;
                 break;
             case PlugID.RedB:
                 spriteRenderer.sprite = redPlugSprite;
+                lineRenderer.startColor = Color.red;
+                lineRenderer.endColor = Color.red;
                 break;
             case PlugID.BlueA:
                 spriteRenderer.sprite = bluePlugSprite;
+                lineRenderer.startColor = Color.cyan;
+                lineRenderer.endColor = Color.cyan;
                 break;
             case PlugID.BlueB:
                 spriteRenderer.sprite = bluePlugSprite;
+                lineRenderer.startColor = Color.cyan;
+                lineRenderer.endColor = Color.cyan;
                 break;
             case PlugID.YellowA:
                 spriteRenderer.sprite = yellowPlugSprite;
+                lineRenderer.startColor = Color.yellow;
+                lineRenderer.endColor = Color.yellow;
                 break;
             case PlugID.YellowB:
                 spriteRenderer.sprite = yellowPlugSprite;
+                lineRenderer.startColor = Color.yellow;
+                lineRenderer.endColor = Color.yellow;
                 break;
             default:
                 break;
@@ -111,6 +133,20 @@ public class SubstitutionPlug : MonoBehaviour
             Vector3 mousePos = Input.mousePosition;
             mousePos.z = transform.position.z - Camera.main.transform.position.z;
             transform.position = Camera.main.ScreenToWorldPoint(mousePos);
+        }
+
+        // if plug has even-numbered ID
+        if ((int)id % 2 == 0)
+        {
+            // retrieve reference to partner if its null
+            // Note: this should only be called once after Start()
+            if (partnerPlug == null)
+                partnerPlug = GameObject.FindGameObjectWithTag("plug" + (id + 1).ToString());
+
+            // draw line to odd-numbered partner
+            //partnerPlug = GameObject.FindGameObjectWithTag("plug" + (id + 1).ToString());
+            lineRenderer.SetPosition(0, transform.position);
+            lineRenderer.SetPosition(1, partnerPlug.transform.position);
         }
     }
 
