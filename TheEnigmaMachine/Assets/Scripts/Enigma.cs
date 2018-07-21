@@ -65,7 +65,7 @@ public class Enigma : MonoBehaviour
         char newInput = PlugboardSubstitution(letterToEncode);
 
         // determine parially converted letter from forward pass though rotors (i.e., what is to be reflected)
-        char partialConvChar = PositionalConversion(letterToEncode, 0, false);
+        char partialConvChar = PositionalConversion(newInput, 0, false);
         partialConvChar = WiringConversion(partialConvChar, 0, true);
         partialConvChar = PositionalConversion(partialConvChar, 0, 1);
         partialConvChar = WiringConversion(partialConvChar, 1, true);
