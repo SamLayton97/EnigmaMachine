@@ -5,7 +5,8 @@ using UnityEngine.Events;
 
 /// <summary>
 /// A moveable letter substitution plug to be inserted into the plugboard.
-/// Note: Plugboard letter-substitution handled in Enigma script.
+/// Note: Plugboard letter-substitution handled in Enigma script. This object
+/// is only used for the user-interface.
 /// </summary>
 public class SubstitutionPlug : MonoBehaviour
 {
